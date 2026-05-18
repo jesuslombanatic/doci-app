@@ -9,12 +9,18 @@ async req(e,t){
             headers: { "apikey": this.key, "Content-Type": "application/json" },
             body: JSON.stringify(t)
         });
+        
+        // Si el servidor responde con error 429 de Rate Limit antes de procesar un JSON válido
+        if (n.status === 429) {
+            return { data: null, error: { message: "Demasiados intentos seguidos (Error 429). Por seguridad, Supabase bloqueó temporalmente tu IP. Espera unos minutos o cambia de red celular." } };
+        }
+
         const r = await n.json();
         if (n.ok) {
             return { data: r, error: null };
         } else {
-            // Mapea el error para que .message nunca devuelva undefined
-            const msgReal = r.msg || r.error_description || r.message || "Error desconocido";
+            // Mapea minuciosamente cualquier variante de error enviada por el servidor
+            const msgReal = r.msg || r.error_description || r.message || (r.error ? r.error : null) || JSON.stringify(r);
             return { data: null, error: { message: msgReal } };
         }
     } catch(e) {
