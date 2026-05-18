@@ -1,12 +1,31 @@
 // =========================================================================================================
-// 1. ESCUDO ANTI-BLOQUEO: LIBRERÍA OFICIAL DE SUPABASE INYECTADA DIRECTAMENTE COMO CÓDIGO PROPIO
+// 1. ESCUDO ANTI-BLOQUEO: LIBRERÍA OFICIAL DE SUPABASE INYECTADA DIRECTAMENTE COMO CÓDIGO PROPIO (CORREGIDA)
 // =========================================================================================================
-!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports):"function"==typeof define&&define.amd?define(["exports"],t):t((e="undefined"!=typeof globalThis?globalThis:e||self).supabase={})}(this,(function(e){"use strict";class t{constructor(e,t){this.url=e,this.key=t,this.auth=new n(e,t)}from(e){return new r(this.url,this.key,e)}}class n{constructor(e,t){this.url=e,this.key=t}async signUp(e){return this.req("signup",e)}async signInWithPassword(e){return this.req("token?grant_type=password",e)}async req(e,t){try{const n=await fetch(`${this.url}/auth/v1/${e}`,{method:"POST",headers:{"apikey":this.key,"Content-Type":"application/json"},body:JSON.stringify(t)}),r=await n.json();return n.ok?{data:r,error:null}:{data:null,error:r}}catch(e){return{data:null,error:e}}}}class r{constructor(e,t,n){this.url=e,this.key=t,this.table=n}async insert(e){try{const t=await fetch(`${this.url}/rest/v1/${this.table}`,{method:"POST",headers:{"apikey":this.key,"Authorization":`Bearer ${this.key}`,"Content-Type":"application/json","Prefer":"return=representation"},body:JSON.stringify(e)}),n=await t.json();return t.ok?{data:n,error:null}:{data:null,error:n}}catch(e){return{data:null,error:e}}}}e.createClient=function(e,n){return new t(e,n)}}));
+!function(e,t){"object"==typeof exports&&"undefined"!=typeof module?t(exports):"function"==typeof define&&define.amd?define(["exports"],t):t((e="undefined"!=typeof globalThis?globalThis:e||self).supabase={})}(this,(function(e){"use strict";class t{constructor(e,t){this.url=e,this.key=t,this.auth=new n(e,t)}from(e){return new r(this.url,this.key,e)}}class n{constructor(e,t){this.url=e,this.key=t}async signUp(e){return this.req("signup",e)}async signInWithPassword(e){return this.req("token?grant_type=password",e)}
+async req(e,t){
+    try {
+        const n = await fetch(`${this.url}/auth/v1/${e}`, {
+            method: "POST",
+            headers: { "apikey": this.key, "Content-Type": "application/json" },
+            body: JSON.stringify(t)
+        });
+        const r = await n.json();
+        if (n.ok) {
+            return { data: r, error: null };
+        } else {
+            // Mapea el error para que .message nunca devuelva undefined
+            const msgReal = r.msg || r.error_description || r.message || "Error desconocido";
+            return { data: null, error: { message: msgReal } };
+        }
+    } catch(e) {
+        return { data: null, error: { message: e.message } };
+    }
+}}class r{constructor(e,t,n){this.url=e,this.key=t,this.table=n}async insert(e){try{const t=await fetch(`${this.url}/rest/v1/${this.table}`,{method:"POST",headers:{"apikey":this.key,"Authorization":`Bearer ${this.key}`,"Content-Type":"application/json","Prefer":"return=representation"},body:JSON.stringify(e)}),n=await t.json();return t.ok?{data:n,error:null}:{data:null,error:n}}catch(e){return{data:null,error:e}}}}e.createClient=function(e,n){return new t(e,n)}}));
 
 // =========================================================================================================
 // 2. CONEXIÓN REAL E INICIALIZACIÓN A TU BASE DE DATOS EN LA NUBE
 // =========================================================================================================
-const SUPABASE_URL = 'https://ygijhcoqtjukmzdmszuw.supabase.co'; 
+const SUPABASE_URL = 'https://supabase.co'; 
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlnaWpoY29xdGp1a216ZG1zenV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTIyMDgsImV4cCI6MjA5NDE4ODIwOH0.D8KGJWpGyPlQIB9uryMYE3_DrtRe1YAL1SfwLDtVu7I';
 
 // El cliente ahora se genera de forma blindada sin que el navegador se entere de enlaces externos
