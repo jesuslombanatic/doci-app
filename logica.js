@@ -6,7 +6,7 @@
 // =========================================================================================================
 // 2. CONEXIÓN REAL E INICIALIZACIÓN A TU BASE DE DATOS EN LA NUBE
 // =========================================================================================================
-const SUPABASE_URL = 'https://supabase.co'; 
+const SUPABASE_URL = 'https://ygijhcoqtjukmzdmszuw.supabase.co'; 
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlnaWpoY29xdGp1a216ZG1zenV3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTIyMDgsImV4cCI6MjA5NDE4ODIwOH0.D8KGJWpGyPlQIB9uryMYE3_DrtRe1YAL1SfwLDtVu7I';
 
 // El cliente ahora se genera de forma blindada sin que el navegador se entere de enlaces externos
